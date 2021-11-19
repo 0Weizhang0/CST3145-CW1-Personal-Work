@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+<head>
+	<meta charest="UTF=8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pet Depot</title>
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+	</head>
+	
+	<body>
+
+		<div id="app">
+			<h1 v-text='sitename'></h1>
+			<button>{{cartItemCount}}
+			<span class="fas fa-cart-plus"></span> Checkout</button>
+			<br><br>
+			<img v-bind:src='product.image'>
+			<h2 v-text="product.title"></h2>
+			<p v-html='product.description'></p>
+			<p>{{product.price}}</p>
+			<button v-on:click="addItem"
+			v-if="canAddToCart">
+			Add to cart</button>
+			<button disabled='disabled' v-else>
+			Add to cart
+			</button>
+			
+			</div>
+			
+			<div id="app2"></div>
+			
+			<script>
+			let webstore = new Vue({
+				el:'#app',
+				data:{
+					sitename:'Aqua APEX',
+					product:{
+						id:1001,
+						title:"Cat Food, 25lb bag",
+						description:"A 25 pound bag of <em>irresistible</em>,"+"organic goodness for your cat.",
+						price:2000,
+						image:"product-fullsize.png",
+						availableInventory: 5
+					},
+					cart: []
+				},
+				methods:{
+					addItem() {
+						this.cart.push(this.product.id)
+					}
+				},
+				computed:{
+					cartItemCount() {
+						return this.cart.length || ''
+				},
+				canAddToCart: function() {
+				return this.product.availableInventory > this.cartItemCount;
+				},
+			}
+		})
+			</script>
+	</body>
+</html>
