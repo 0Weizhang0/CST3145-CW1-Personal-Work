@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+<head>
+	<meta charest="UTF=8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pet Depot</title>
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+	</head>
+	
+	<body>
+
+		<div id="app">
+			<h1 v-text='sitename'></h1>
+			<button @click='showCheckout'>{{cartItemCount}}
+			<span class="fas fa-cart-plus"></span> Shopping Cart</button>
+			<br><br>
+			<div v-if='showProduct'>
+			<img v-bind:src='product.image'>
+			<h2 v-text="product.title"></h2>
+			<p v-html='product.description'></p>
+			<p>{{product.price}}</p>
+			<button v-on:click="addItem"
+			v-if="canAddToCart">
+			Add to cart</button>
+			<button disabled='disabled' v-else>
+			Add to cart
+			</button>
+			<span v-if="product.availableInventory - cartItemCount < 5">
+			Only {{product.availableInventory - cartItemCount}} left!
+			</span>
+			<span v-for='n in product.rating'>★</span>
+			<span v-for='n in 5-product.rating'>☆</span>
+			</div>
+			
+			<div v-else>
+				<h2>Checkout</h2>
+				<p>
+				<strong>First Name:</strong>
+				<input v-model="order.firstName"/>
+				</p>
+				<p>
+				<strong>Last Name:</strong>
+				<input v-model="order.lastName"/>
+				</p>
+				<p><strong>Address:</strong> <input v-model="order.address"/></p>
+				<p><strong>City:</strong> <input v-model="order.city"/></p>
+				<p><strong>Zip/Postal Code:</strong> <input v-model="order.zip"/></p>
+				<p><strong>Phone:</strong> <input v-model="order.phone"/></p>
+				
+				<h3>Order Information</h3>
+				<p>First Name: {{order.firstName}}</p>
+				<p>Last Name: {{order.lastName}}</p>
+				<p>Address: {{order.address}}</p>
+				<p>City: {{order.city}}</p>
+				<p>Zip: {{order.zip}}</p>
+				<p>Phone: {{order.phone}}</p>
+				<button v-on:click="submitForm">Checkout</button>
+
+				</div>
+				<div id="app2"></div>
+			
+			<script>
+			let webstore = new Vue({
+				el:'#app',
+				data:{
+					sitename:'Aqua APEX',
+					showProduct: true,
+					product:{
+						id:1001,
+						title:"Cat Food, 25lb bag",
+						description:"A 25 pound bag of <em>irresistible</em>,"+"organic goodness for your cat.",
+						price:2000,
+						image:"product-fullsize.png",
+						availableInventory: 5,
+						rating: 3
+					},
+					cart: [],
+					order:{
+						firstName:'',
+						lastName:'',
+						address:'',
+						city:'',
+						zip:'',
+						state:''
+					}
+				},
+				methods:{
+					addItem() {
+						this.cart.push(this.product.id)
+					
+				},
+				
+				submitForm(){
+					alert('Order Submitted!')
+					},
+					
+				showCheckout() {
+					this.showProduct = this.showProduct ? false : true
+				}
+			},
+				computed:{
+					cartItemCount() {
+						return this.cart.length || ''
+				},
+				
+				canAddToCart: function() {
+				return this.product.
+				availableInventory > this.cartItemCount
+				},
+		}
+	})
+			</script>
+	</body>
+</html>
